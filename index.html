@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RoséPages — Aesthetic Digital Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #FFF5F7;
+      --bg-card: #FFFFFF;
+      --bg-soft: #FFE8EE;
+      --border-pink: #FADADD;
+      --primary: #FF8FA3;
+      --primary-hover: #FF4D6D;
+      --text-main: #4A3B3E;
+      --text-muted: #8C7277;
+      --shadow-pink: 0 10px 25px rgba(255, 143, 163, 0.16);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    /* Tampilan Views */
+    .view-section {
+      display: none;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .view-section.active {
+      display: flex;
+    }
+
+    /* Auth Styling */
+    .auth-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #FFE5EC 0%, #FFF5F7 100%);
+      padding: 20px;
+    }
+
+    .auth-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-pink);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: var(--shadow-pink);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .auth-header .brand-icon {
+      font-size: 2.2rem;
+    }
+
+    .auth-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--text-main);
+    }
+
+    .auth-header h2 span {
+      color: var(--primary-hover);
+      font-style: italic;
+    }
+
+    .auth-header p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .auth-tabs {
+      display: flex;
+      background: var(--bg-main);
+      border-radius: 50px;
+      padding: 4px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border-pink);
+    }
+
+    .auth-tab {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 10px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 50px;
+      transition: all 0.2s ease;
+    }
+
+    .auth-tab.active {
+      background: #FFFFFF;
+      color: var(--primary-hover);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    /* Navbar Dashboard */
+    .navbar {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-pink);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 14px 0;
+    }
+
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-icon {
+      font-size: 1.5rem;
+    }
+
+    .brand h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--text-main);
+    }
+
+    .brand h1 span {
+      color: var(--primary-hover);
+      font-style: italic;
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-greeting {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .logout-btn {
+      background: var(--bg-soft);
+      color: var(--primary-hover);
+      border: 1px solid var(--border-pink);
+      padding: 6px 12px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .logout-btn:hover {
+      background: var(--primary-hover);
+      color: #FFFFFF;
+    }
+
+    /* Search Bar */
+    .search-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .search-wrapper input {
+      width: 100%;
+      padding: 9px 38px 9px 16px;
+      border-radius: 50px;
+      border: 1.5px solid var(--border-pink);
+      background: var(--bg-main);
+      font-family: inherit;
+      font-size: 0.88rem;
+      color: var(--text-main);
+    }
+
+    .search-wrapper input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #FFFFFF;
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.85rem;
+      pointer-events: none;
+    }
+
+    /* Hero Banner */
+    .hero {
+      background: linear-gradient(135deg, #FFE5EC 0%, #FFF0F3 100%);
+      border: 1px solid var(--border-pink);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      margin-top: 24px;
+      text-align: center;
+      box-shadow: var(--shadow-pink);
+    }
+
+    .badge-pill {
+      display: inline-block;
+      background: #FFFFFF;
+      color: var(--primary-hover);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 50px;
+      border: 1px solid var(--border-pink);
+      margin-bottom: 10px;
+    }
+
+    .hero h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto;
+      font-size: 0.92rem;
+    }
+
+    /* Filter Section */
+    .filter-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 24px 0 18px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 8px 16px;
+      border-radius: 50px;
+      border: 1.5px solid var(--border-pink);
+      background: #FFFFFF;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover, .tab-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(255, 143, 163, 0.3);
+    }
+
+    .book-count {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Book Grid */
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+      gap: 20px;
+      margin-bottom: 50px;
+    }
+
+    .book-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-pink);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-pink);
+      transition: transform 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .book-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .cover-wrapper {
+      position: relative;
+      height: 260px;
+      background: var(--bg-soft);
+      cursor: pointer;
+    }
+
+    .cover-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .category-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--primary-hover);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 50px;
+    }
+
+    .fav-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .book-info {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .book-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 3px;
+      cursor: pointer;
+    }
+
+    .book-title:hover {
+      color: var(--primary-hover);
+    }
+
+    .book-author {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .book-meta {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border-pink);
+    }
+
+    .rating {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #E07A5F;
+    }
+
+    .read-link {
+      background: var(--bg-soft);
+      color: var(--primary-hover);
+      border: none;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .read-link:hover {
+      background: var(--primary);
+      color: #FFFFFF;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px;
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      border: 1px dashed var(--border-pink);
+      color: var(--text-muted);
+    }
+
+    /* FAB */
+    .fab-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: var(--primary-hover);
+      color: #FFFFFF;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
+      z-index: 90;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(74, 59, 62, 0.4);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 200;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-pink);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 640px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 24px;
+      position: relative;
+    }
+
+    .form-modal {
+      max-width: 480px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: var(--bg-soft);
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      color: var(--primary-hover);
+      cursor: pointer;
+    }
+
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 20px;
+    }
+
+    .detail-cover {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+    }
+
+    .synopsis-box {
+      background: var(--bg-main);
+      padding: 12px;
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+      margin: 10px 0;
+    }
+
+    .reader-box {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      background: #FFF9FA;
+      border-left: 3px solid var(--primary);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+
+    .reader-box.active {
+      display: block;
+    }
+
+    /* Forms general */
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1.5px solid var(--border-pink);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      background: var(--bg-main);
+      color: var(--text-main);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #FFFFFF;
+    }
+
+    .btn-primary {
+      background: var(--primary-hover);
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .btn-primary:hover {
+      background: #E03A58;
+    }
+
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 18px;
+      border-top: 1px solid var(--border-pink);
+      background: #FFFFFF;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 640px) {
+      .detail-layout {
+        grid-template-columns: 1fr;
+      }
+      .detail-cover {
+        height: 200px;
+        max-width: 150px;
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- VIEW 1: AUTHENTICATION (LOGIN / REGISTER) -->
+  <div id="authView" class="view-section active">
+    <div class="auth-wrapper">
+      <div class="auth-card">
+        <div class="auth-header">
+          <span class="brand-icon">🎀</span>
+          <h2>Rosé<span>Pages</span></h2>
+          <p>Perpustakaan Digital Estetik Kamu</p>
+        </div>
+
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Masuk</button>
+          <button class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Daftar</button>
+        </div>
+
+        <!-- Form Login -->
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="loginEmail">Email / Nama Pengguna</label>
+            <input type="text" id="loginEmail" required placeholder="nama@email.com atau admin" />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Kata Sandi</label>
+            <input type="password" id="loginPassword" required placeholder="••••••••" />
+          </div>
+          <button type="submit" class="btn-primary">Masuk ke Perpustakaan ✨</button>
+          <p style="text-align: center; font-size: 0.78rem; color: var(--text-muted); margin-top: 10px;">Demo cepat: ketik <b>admin</b> / <b>admin123</b></p>
+        </form>
+
+        <!-- Form Register -->
+        <form id="registerForm" style="display: none;">
+          <div class="form-group">
+            <label for="regName">Nama Lengkap</label>
+            <input type="text" id="regName" required placeholder="Nama kamu" />
+          </div>
+          <div class="form-group">
+            <label for="regEmail">Email</label>
+            <input type="email" id="regEmail" required placeholder="nama@email.com" />
+          </div>
+          <div class="form-group">
+            <label for="regPassword">Kata Sandi</label>
+            <input type="password" id="regPassword" required placeholder="••••••••" />
+          </div>
+          <button type="submit" class="btn-primary">Daftar Akun Baru 🌸</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 2: DASHBOARD PERPUSTAKAAN -->
+  <div id="dashboardView" class="view-section">
+    <header class="navbar">
+      <div class="container nav-content">
+        <div class="brand">
+          <span class="brand-icon">🎀</span>
+          <h1>Rosé<span>Pages</span></h1>
+        </div>
+        <div class="search-wrapper">
+          <input type="text" id="searchInput" placeholder="Cari judul novel, komik, atau penulis..." autocomplete="off" />
+          <span class="search-icon">🔍</span>
+        </div>
+        <div class="user-menu">
+          <span id="userNameDisplay" class="user-greeting">Hai, Pembaca ✨</span>
+          <button id="logoutBtn" class="logout-btn" title="Keluar">Keluar 🚪</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container" style="flex-grow: 1;">
+      <section class="hero">
+        <span class="badge-pill">✨ Coquette & Cozy Reading Space</span>
+        <h2>Temukan Dunia Cerita dalam Nuansa Pastel</h2>
+        <p>Koleksi kurasi novel romansa, fantasi, hingga komik populer yang siap menemani waktu santaimu.</p>
+      </section>
+
+      <section class="filter-section">
+        <div class="filter-tabs" id="filterTabs">
+          <button class="tab-btn active" data-category="all">Semua Koleksi</button>
+          <button class="tab-btn" data-category="Novel">📖 Novel</button>
+          <button class="tab-btn" data-category="Komik">💭 Komik</button>
+          <button class="tab-btn" data-category="favorite">💗 Favoritku</button>
+        </div>
+        <div class="book-count" id="bookCount">Menampilkan 0 buku</div>
+      </section>
+
+      <section class="book-grid" id="bookGrid">
+        <!-- Kartu buku dirender melalui JS -->
+      </section>
+    </main>
+
+    <button class="fab-btn" id="openAddModal" title="Tambah Buku Baru">+</button>
+
+    <!-- Modal Detail Buku -->
+    <div class="modal-overlay" id="detailModal">
+      <div class="modal-card detail-modal">
+        <button class="close-btn" id="closeDetailModal">&times;</button>
+        <div class="detail-body" id="detailContent"></div>
+      </div>
+    </div>
+
+    <!-- Modal Tambah Buku -->
+    <div class="modal-overlay" id="addModal">
+      <div class="modal-card form-modal">
+        <button class="close-btn" id="closeAddModal">&times;</button>
+        <h3>🌸 Tambah Koleksi Baru</h3>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 14px;">Simpan novel atau komik favoritmu ke rak digital.</p>
+        <form id="addBookForm">
+          <div class="form-group">
+            <label for="bookTitle">Judul Buku / Komik</label>
+            <input type="text" id="bookTitle" required placeholder="Contoh: Laut Bercerita" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bookAuthor">Penulis</label>
+              <input type="text" id="bookAuthor" required placeholder="Contoh: Leila S. Chudori" />
+            </div>
+            <div class="form-group">
+              <label for="bookCategory">Kategori</label>
+              <select id="bookCategory" required>
+                <option value="Novel">Novel</option>
+                <option value="Komik">Komik</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bookRating">Rating (1.0 - 5.0)</label>
+              <input type="number" id="bookRating" step="0.1" min="1" max="5" value="4.8" required />
+            </div>
+            <div class="form-group">
+              <label for="bookCover">URL Cover (Opsional)</label>
+              <input type="url" id="bookCover" placeholder="https://..." />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="bookSynopsis">Sinopsis Singkat</label>
+            <textarea id="bookSynopsis" rows="3" required placeholder="Tuliskan ringkasan cerita..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="bookExcerpt">Cuplikan Bab 1</label>
+            <textarea id="bookExcerpt" rows="3" placeholder="Tuliskan kutipan pembuka cerita..."></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Simpan ke Rak Buku ✨</button>
+        </form>
+      </div>
+    </div>
+
+    <footer>
+      <p>Dibuat dengan 💗 oleh <strong>RoséPages Digital Library</strong> • Open Source di GitHub</p>
+    </footer>
+  </div>
+
+  <script>
+    // --- SKRIP APLIKASI TERPADU ---
+    const authView = document.getElementById("authView");
+    const dashboardView = document.getElementById("dashboardView");
+
+    // Cek Status Login Saat Dimuat
+    function checkAuth() {
+      const activeUser = localStorage.getItem("roseActiveUser");
+      if (activeUser) {
+        authView.classList.remove("active");
+        dashboardView.classList.add("active");
+        document.getElementById("userNameDisplay").textContent = `Hai, ${activeUser} ✨`;
+        initDashboard();
+      } else {
+        dashboardView.classList.remove("active");
+        authView.classList.add("active");
+      }
+    }
+
+    // Tab Login / Register Switcher
+    window.switchAuthTab = function(type) {
+      const loginForm = document.getElementById("loginForm");
+      const registerForm = document.getElementById("registerForm");
+      const tabLogin = document.getElementById("tabLogin");
+      const tabRegister = document.getElementById("tabRegister");
+
+      if (type === "login") {
+        loginForm.style.display = "block";
+        registerForm.style.display = "none";
+        tabLogin.classList.add("active");
+        tabRegister.classList.remove("active");
+      } else {
+        loginForm.style.display = "none";
+        registerForm.style.display = "block";
+        tabRegister.classList.add("active");
+        tabLogin.classList.remove("active");
+      }
+    };
+
+    // Register Handler
+    document.getElementById("registerForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("regName").value.trim();
+      const email = document.getElementById("regEmail").value.trim();
+      const password = document.getElementById("regPassword").value;
+
+      const users = JSON.parse(localStorage.getItem("roseUsers")) || [];
+      if (users.some(u => u.email === email)) {
+        alert("Email sudah terdaftar! Silakan masuk.");
+        return;
+      }
+
+      users.push({ name, email, password });
+      localStorage.setItem("roseUsers", JSON.stringify(users));
+      alert("Registrasi berhasil! Silakan masuk.");
+      document.getElementById("registerForm").reset();
+      switchAuthTab("login");
+    });
+
+    // Login Handler
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const identifier = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value;
+
+      const users = JSON.parse(localStorage.getItem("roseUsers")) || [];
+      const user = users.find(u => (u.email === identifier || u.name === identifier) && u.password === password);
+
+      if (!user && identifier === "admin" && password === "admin123") {
+        localStorage.setItem("roseActiveUser", "Admin Rosé");
+        checkAuth();
+        return;
+      }
+
+      if (user) {
+        localStorage.setItem("roseActiveUser", user.name);
+        checkAuth();
+      } else {
+        alert("Email/Nama Pengguna atau Kata Sandi salah! (Atau gunakan demo: admin / admin123)");
+      }
+    });
+
+    // Logout Handler
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("roseActiveUser");
+      checkAuth();
+    });
+
+    // --- INISIALISASI DASHBOARD ---
+    function initDashboard() {
+      const defaultBooks = [
+        {
+          id: 1,
+          title: "Laut Bercerita",
+          author: "Leila S. Chudori",
+          category: "Novel",
+          rating: 4.9,
+          cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=500&q=80",
+          synopsis: "Kisah persahabatan, cinta, keluarga, dan kehilangan para aktivis mahasiswa di tahun 1998.",
+          excerpt: "Bab 1: Jakarta, Maret 1998. Suara langkah sepatu bot terdengar menggema di lorong sempit itu...",
+          favorite: true
+        },
+        {
+          id: 2,
+          title: "Heartstopper Vol. 1",
+          author: "Alice Oseman",
+          category: "Komik",
+          rating: 4.9,
+          cover: "https://images.unsplash.com/photo-1618336753974-aae8e04506aa?auto=format&fit=crop&w=500&q=80",
+          synopsis: "Charlie Spring dan Nick Nelson bertemu di sekolah menengah dan menumbuhkan cinta yang manis.",
+          excerpt: "[Panel 1] Pagi di Truham Grammar School. Charlie duduk di bangku barisan depan...",
+          favorite: true
+        },
+        {
+          id: 3,
+          title: "Bumi",
+          author: "Tere Liye",
+          category: "Novel",
+          rating: 4.8,
+          cover: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=500&q=80",
+          synopsis: "Petualangan Raib, Seli, dan Ali menjelajahi dunia paralel Klan Bulan.",
+          excerpt: "Bab 1: Namaku Raib. Aku adalah remaja biasa berusia lima belas tahun...",
+          favorite: false
+        },
+        {
+          id: 4,
+          title: "Spy x Family Vol. 1",
+          author: "Tatsuya Endo",
+          category: "Komik",
+          rating: 4.9,
+          cover: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=500&q=80",
+          synopsis: "Mata-mata ulung membangun keluarga palsu dengan pembunuh bayaran dan anak telepati.",
+          excerpt: "[Panel 1] Berlint, Ostania. 'Mulai hari ini, namamu adalah Anya Forger.'...",
+          favorite: false
+        }
+      ];
+
+      let books = JSON.parse(localStorage.getItem("rosePagesBooks")) || defaultBooks;
+      let currentCategory = "all";
+      let searchQuery = "";
+
+      const bookGrid = document.getElementById("bookGrid");
+      const bookCount = document.getElementById("bookCount");
+      const searchInput = document.getElementById("searchInput");
+      const filterTabs = document.querySelectorAll(".tab-btn");
+
+      const detailModal = document.getElementById("detailModal");
+      const detailContent = document.getElementById("detailContent");
+      const closeDetailModal = document.getElementById("closeDetailModal");
+
+      const addModal = document.getElementById("addModal");
+      const openAddModal = document.getElementById("openAddModal");
+      const closeAddModal = document.getElementById("closeAddModal");
+      const addBookForm = document.getElementById("addBookForm");
+
+      function saveBooks() {
+        localStorage.setItem("rosePagesBooks", JSON.stringify(books));
+      }
+
+      function renderBooks() {
+        const filtered = books.filter((book) => {
+          const matchesCategory =
+            currentCategory === "all" ||
+            (currentCategory === "favorite" && book.favorite) ||
+            book.category === currentCategory;
+
+          const matchesSearch =
+            book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            book.author.toLowerCase().includes(searchQuery.toLowerCase());
+
+          return matchesCategory && matchesSearch;
+        });
+
+        bookCount.textContent = `Menampilkan ${filtered.length} koleksi`;
+
+        if (filtered.length === 0) {
+          bookGrid.innerHTML = `
+            <div class="empty-state">
+              <h3>🌸 Tidak ada buku ditemukan</h3>
+              <p>Coba kata kunci lain atau tambahkan koleksi baru.</p>
+            </div>
+          `;
+          return;
+        }
+
+        bookGrid.innerHTML = filtered
+          .map(
+            (book) => `
+            <article class="book-card">
+              <div class="cover-wrapper" onclick="openBookDetail(${book.id})">
+                <img src="${book.cover}" alt="${book.title}" onerror="this.src='https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=500&q=80'" />
+                <span class="category-tag">${book.category}</span>
+                <button class="fav-btn" onclick="event.stopPropagation(); toggleFavorite(${book.id})" title="Favorit">
+                  ${book.favorite ? "💗" : "🤍"}
+                </button>
+              </div>
+              <div class="book-info">
+                <h3 class="book-title" onclick="openBookDetail(${book.id})">${book.title}</h3>
+                <p class="book-author">oleh ${book.author}</p>
+                <div class="book-meta">
+                  <span class="rating">⭐ ${book.rating}</span>
+                  <button class="read-link" onclick="openBookDetail(${book.id})">Detail</button>
+                </div>
+              </div>
+            </article>
+          `
+          )
+          .join("");
+      }
+
+      window.toggleFavorite = function(id) {
+        books = books.map((book) =>
+          book.id === id ? { ...book, favorite: !book.favorite } : book
+        );
+        saveBooks();
+        renderBooks();
+      };
+
+      window.openBookDetail = function(id) {
+        const book = books.find((b) => b.id === id);
+        if (!book) return;
+
+        detailContent.innerHTML = `
+          <div class="detail-layout">
+            <img class="detail-cover" src="${book.cover}" alt="${book.title}" />
+            <div class="detail-text">
+              <span class="badge-pill">${book.category} • ⭐ ${book.rating}</span>
+              <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; margin:6px 0;">${book.title}</h3>
+              <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:10px;">Penulis: <strong>${book.author}</strong></p>
+              <div class="synopsis-box">
+                <strong>Sinopsis:</strong><br/>
+                ${book.synopsis}
+              </div>
+              <button class="btn-primary" onclick="toggleReader()">📖 Baca Cuplikan Bab 1</button>
+            </div>
+          </div>
+          <div class="reader-box" id="readerBox">
+            <strong>Pratinjau Bacaan:</strong><br/><br/>
+            ${book.excerpt || "Cuplikan bab belum tersedia."}
+          </div>
+        `;
+        detailModal.classList.add("active");
+      };
+
+      window.toggleReader = function() {
+        const readerBox = document.getElementById("readerBox");
+        if (readerBox) readerBox.classList.toggle("active");
+      };
+
+      filterTabs.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          filterTabs.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          currentCategory = btn.dataset.category;
+          renderBooks();
+        });
+      });
+
+      searchInput.addEventListener("input", (e) => {
+        searchQuery = e.target.value;
+        renderBooks();
+      });
+
+      closeDetailModal.onclick = () => detailModal.classList.remove("active");
+      openAddModal.onclick = () => addModal.classList.add("active");
+      closeAddModal.onclick = () => addModal.classList.remove("active");
+
+      window.onclick = (e) => {
+        if (e.target === detailModal) detailModal.classList.remove("active");
+        if (e.target === addModal) addModal.classList.remove("active");
+      };
+
+      addBookForm.onsubmit = (e) => {
+        e.preventDefault();
+        const newBook = {
+          id: Date.now(),
+          title: document.getElementById("bookTitle").value.trim(),
+          author: document.getElementById("bookAuthor").value.trim(),
+          category: document.getElementById("bookCategory").value,
+          rating: parseFloat(document.getElementById("bookRating").value).toFixed(1),
+          cover: document.getElementById("bookCover").value.trim() || "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=500&q=80",
+          synopsis: document.getElementById("bookSynopsis").value.trim(),
+          excerpt: document.getElementById("bookExcerpt").value.trim(),
+          favorite: false
+        };
+
+        books.unshift(newBook);
+        saveBooks();
+        renderBooks();
+        addBookForm.reset();
+        addModal.classList.remove("active");
+      };
+
+      renderBooks();
+    }
+
+    // Jalankan pengecekan saat pertama kali dibuka
+    checkAuth();
+  </script>
+</body>
+</html>
